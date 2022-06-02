@@ -1,4 +1,3 @@
-export function tripsSelector(state)
-{
+export function tripsSelector(state) {
     return state.trips;
 }

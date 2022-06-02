@@ -1,0 +1,73 @@
+.obrazek_wycieczk {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    float: left;
+    padding-right: 20px;
+    margin-top: 20px;
+}
+
+.info_wycieczki {
+    display: flex;
+    flex-direction: column;
+}
+
+.div_na_wszystko {
+    display: flex;
+    flex-direction: column;
+}
+
+.div_na_srodek {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.div_na_cene_i_rezerwacje {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.div_na_cene_i_rezerwacje a {
+    color: blue;
+}
+
+.prawa_kolumna {
+    margin: 10px;
+    border: solid rgb(255, 217, 0);
+    border-width: 5px;
+    box-sizing: border-box;
+}
+
+.promocje_info h2 a {
+    color: rgb(49, 23, 23);
+}
+
+.porady {
+    display: flex;
+    flex-direction: column;
+}
+
+.porady>a:nth-child(2n) {
+    background-color: yellow;
+}
+
+.porady>a:nth-child(2n + 1) {
+    background-color: lightblue;
+}
+
+@media screen and (max-width: 600px) {
+    .porady {
+        display: none;
+    }
+
+    .div_na_srodek {
+        flex-direction: column;
+    }
+}
+
+.info_wycieczki h2 a {
+    color: black;
+    font-size: xx-large;
+}
