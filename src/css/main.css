@@ -49,11 +49,11 @@
     flex-direction: column;
 }
 
-.porady>a:nth-child(2n) {
+.porady > a:nth-child(2n) {
     background-color: yellow;
 }
 
-.porady>a:nth-child(2n + 1) {
+.porady > a:nth-child(2n + 1) {
     background-color: lightblue;
 }
 

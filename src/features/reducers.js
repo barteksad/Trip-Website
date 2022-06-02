@@ -15,9 +15,9 @@ define("OLDATED", "OLDATED");
 Object.freeze(TripsState);
 
 const initialState = {
-    tripsState : TripsState.OLDATED,
-    trips : []
-}
+    tripsState: TripsState.OLDATED,
+    trips: [],
+};
 
 /*
     id
@@ -33,17 +33,17 @@ const initialState = {
 
 export const tripsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case "FETCH_SUCCESS" :
+        case "FETCH_SUCCESS":
             return {
-                tripsState : TripsState.UP_TO_DATE,
-                trips : action.trips
-            }
-        case "FETCH_REQUEST" :
+                tripsState: TripsState.UP_TO_DATE,
+                trips: action.trips,
+            };
+        case "FETCH_REQUEST":
             return {
                 ...state,
-                tripsState : TripsState.FETCHING,
-            }
+                tripsState: TripsState.FETCHING,
+            };
         default:
-            return state
+            return state;
     }
-}
+};
