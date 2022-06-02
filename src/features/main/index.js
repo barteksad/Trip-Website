@@ -1,41 +1,42 @@
 // import React from "react";
-import { useSelector, useDispatch  } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 // import { useNavigate } from "react-router-dom";
-import React from 'react';
+import React, { useEffect } from "react";
+
+import { Header } from "../header/index.js";
+import { Footer } from "../footer/index.js";
+import { TripDescription } from "./tripDescription/index.js";
+import "../../css/common.css";
+import "../../css/main.css";
 
 import { tripsSelector } from "../selectors.js";
-import { setFetchedTrips } from "../actions.js";
-
-import axios from "axios";
-axios.defaults.baseURL = 'http://localhost:3000';
-axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-import { backendUrl, getTrips } from "../../routes.js";
+import { fetchTrips } from "../actions.js";
 
 export const Main = () => {
     const tripsState = useSelector(tripsSelector);
     const dispatch = useDispatch();
-    const fetchTrips = async (dispatch, tripsState, setFetchedTrips) => {
-        if (tripsState.trips_fetched) {
-            return;
-        } 
-        axios
-            .get(backendUrl + getTrips)
-            .then((res) => {
-                dispatch(setFetchedTrips(res.data));
-            })
-            .catch((err)=> {
-                console.log(err);
-            });
-    }
 
-    fetchTrips(dispatch, tripsState, setFetchedTrips);
+    useEffect(() => {
+        dispatch(fetchTrips());
+    }, [dispatch, tripsState]);
 
-    return(
-        <div className="main">
-            {tripsState.trips_fetched && tripsState.trips.map(trip => {
-                const {id, name, description, short_description, image, price, begin_date, end_date, available_places, createdAt, updatedAt} = trip;
-                return <li key={id}>{name},{ description},{ short_description},{ image},{ price},{ begin_date},{ end_date},{ available_places},{ createdAt},{ updatedAt}</li>
-            })}
+    return (
+        <div className="allContent">
+            <Header />
+            <div className="main">
+                {tripsState.trips.map((trip) => (
+                    <TripDescription
+                        key={trip.name}
+                        id={trip.id}
+                        name={trip.name}
+                        description={trip.description}
+                        image={trip.image}
+                        price={trip.price}
+                        available_places={trip.available_places}
+                    />
+                ))}
+            </div>
+            <Footer />
         </div>
-    )
-}
+    );
+};
