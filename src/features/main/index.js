@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 
 import { Header } from "../header/index.js";
 import { Footer } from "../footer/index.js";
-import { TripDescription } from "./tripDescription/index.js";
+import { TripDescription } from "../trip/tripDescription/index.js";
 import "../../css/common.css";
 import "../../css/main.css";
 
@@ -25,15 +25,7 @@ export const Main = () => {
             <Header />
             <div className="main">
                 {tripsState.data.map((trip) => (
-                    <TripDescription
-                        key={trip.name}
-                        id={trip.id}
-                        name={trip.name}
-                        description={trip.description}
-                        image={trip.image}
-                        price={trip.price}
-                        available_places={trip.available_places}
-                    />
+                    <TripDescription key={trip.id} id={trip.id} />
                 ))}
             </div>
             <Footer />
