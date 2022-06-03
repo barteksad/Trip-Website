@@ -18,13 +18,13 @@ export const Main = () => {
 
     useEffect(() => {
         dispatch(fetchTrips());
-    }, [dispatch, tripsState]);
+    }, [dispatch, tripsState.fetchState]);
 
     return (
         <div className="allContent">
             <Header />
             <div className="main">
-                {tripsState.trips.map((trip) => (
+                {tripsState.data.map((trip) => (
                     <TripDescription
                         key={trip.name}
                         id={trip.id}

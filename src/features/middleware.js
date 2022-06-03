@@ -20,7 +20,7 @@ const fetchTripsError = () => ({
 
 export const BackendMiddleware = (storeAPI) => (next) => (action) => {
     if (action.type === "FETCH_TRIPS") {
-        if (storeAPI.getState().trips.tripsState === TripsState.OLDATED) {
+        if (storeAPI.getState().trips.fetchState === TripsState.OLDATED) {
             storeAPI.dispatch(fetchTripsRequest());
             axios
                 .get(backendUrl + getTrips)

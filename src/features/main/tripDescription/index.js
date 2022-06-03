@@ -13,8 +13,8 @@ export const TripDescription = (props) => {
                 </h2>
                 <p>{props.description}</p>
                 <div className="div_na_cene_i_rezerwacje">
-                    <p>cena: {props.price}</p>
-                    <p>dostępne miejsca: {props.available_places}</p>
+                    <p>price: {props.price}</p>
+                    <p>available places: {props.available_places}</p>
                     <Link to={`/reserve/${props.id}`}> Zarezerwuj {">>"} </Link>
                 </div>
             </div>
