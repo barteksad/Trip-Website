@@ -2,12 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Header } from "../header";
 import { Footer } from "../footer";
 import "./signin.css";
+import axios from "axios";
+import { backendUrl, signin } from "../../routes";
+import { useDispatch } from "react-redux";
+import { setSession } from "../actions";
+import { useNavigate } from 'react-router-dom';
+
 export const SignIn = () => {
     const [name, setName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const checkName = () => {
         const len = name.length;
@@ -109,7 +117,8 @@ export const SignIn = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [password, confirmPassword]);
 
-    const handleSumbit = (event) => {
+    const handleSumbit = async (event) => {
+        event.preventDefault();
         const nameOk = checkName();
         const lastNameOk = checkLastName();
         const emailOk = checkEmail();
@@ -117,8 +126,30 @@ export const SignIn = () => {
         const allOk = nameOk && lastNameOk && emailOk && passwordOk;
         if(!allOk) {
             event.stopPropagation();
-            event.preventDefault();
         }
+
+        axios
+            .post(backendUrl + signin, {
+                name : name,
+                last_name : lastName, 
+                email : email, 
+                password : password,
+            })
+            .then((res) => {
+                console.log(res);
+                if(res.status == 200) {
+                    dispatch(setSession(res.data.id, name, lastName, email));
+                    console.log("User created, id = " + res.data.id);
+                    navigate("/main");
+                } else {
+                    alert("Wystąpił błąd :(");
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                console.log(err.response.data);
+                alert("Wystąpił błąd :(");
+            });
     }
 
     return (
@@ -192,7 +223,7 @@ export const SignIn = () => {
                         ></input>
                         <span id="confirm-password-input-error"></span>
                     </div>
-                    <input type="submit" value="submit"></input>
+                    <button type="submit" value="submit"></button>
                 </form>
             </div>
             <Footer />

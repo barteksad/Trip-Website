@@ -1,5 +1,11 @@
-// https://stackoverflow.com/questions/39813984/how-to-fetch-data-through-api-in-redux
-
 export const fetchTrips = () => ({
     type: "FETCH_TRIPS",
+});
+
+export const setSession = (name, id, last_name, email) => ({
+    type: "SET_SESSION",
+    id,
+    name,
+    last_name,
+    email,
 });

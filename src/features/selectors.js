@@ -9,3 +9,7 @@ export function tripByIdSelector(id) {
         });
     };
 }
+
+export function sessionSelector(state) {
+    return state.session;
+}

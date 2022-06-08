@@ -1,23 +1,25 @@
 export const TripsState = {};
 
-function define(name, value) {
-    Object.defineProperty(TripsState, name, {
+function define(object, name, value) {
+    Object.defineProperty(object, name, {
         value: value,
         writable: false,
         enumerable: true,
     });
 }
 
-define("UP_TO_DATE", "UP_TO_DATE");
-define("FETCHING", "FETCHING");
-define("OLDATED", "OLDATED");
+define(TripsState, "UP_TO_DATE", "UP_TO_DATE");
+define(TripsState, "FETCHING", "FETCHING");
+define(TripsState, "OLDATED", "OLDATED");
 
 Object.freeze(TripsState);
 
-const initialState = {
+const initialTripsState = {
     fetchState: TripsState.OLDATED,
     data: [],
 };
+
+const initialSessionState = null;
 
 /*
     id
@@ -31,7 +33,7 @@ const initialState = {
     available_places
 */
 
-export const tripsReducer = (state = initialState, action) => {
+export const tripsReducer = (state = initialTripsState, action) => {
     switch (action.type) {
         case "FETCH_SUCCESS":
             return {
@@ -47,3 +49,19 @@ export const tripsReducer = (state = initialState, action) => {
             return state;
     }
 };
+
+export const sessionReducer = (state = initialSessionState, action) => {
+        switch (action.type) {
+            case "SET_SESSION":
+                return {
+                    id : action.id,
+                    name: action.name,
+                    last_name: action.last_name,
+                    email: action.email,
+                }
+            case "LOGOUT" : 
+                return null;
+            default:
+                return state;
+        }
+}
