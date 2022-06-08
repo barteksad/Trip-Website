@@ -9,3 +9,7 @@ export const setSession = (name, id, last_name, email) => ({
     last_name,
     email,
 });
+
+export const resetSession = () => ({
+    type: "LOGOUT",
+});

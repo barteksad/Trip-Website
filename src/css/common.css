@@ -38,6 +38,13 @@ header nav {
     align-content: space-around;    
 }
 
+#logout {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: space-around;   
+}
+
 header nav menu {
     display: flex;
     flex-direction: row;
