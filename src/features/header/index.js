@@ -11,7 +11,7 @@ export const Header = () => {
 
     const handleLogout = () => {
         dispatch(resetSession());
-    }
+    };
 
     return (
         <header>

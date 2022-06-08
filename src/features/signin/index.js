@@ -6,7 +6,7 @@ import axios from "axios";
 import { backendUrl, signin } from "../../routes";
 import { useDispatch } from "react-redux";
 import { setSession } from "../actions";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export const SignIn = () => {
     const [name, setName] = useState("");
@@ -77,7 +77,7 @@ export const SignIn = () => {
         const confirm_password_input_error = document.getElementById(
             "confirm-password-input-error"
         );
-        const passwordsSame = (password   == confirmPassword);
+        const passwordsSame = password == confirmPassword;
         console.log(passwordsSame);
         if (len === 0 || len > 40 || !passwordsSame) {
             password_input.classList.add("invalid-form");
@@ -124,20 +124,20 @@ export const SignIn = () => {
         const emailOk = checkEmail();
         const passwordOk = checkPassword();
         const allOk = nameOk && lastNameOk && emailOk && passwordOk;
-        if(!allOk) {
+        if (!allOk) {
             event.stopPropagation();
         }
 
         axios
             .post(backendUrl + signin, {
-                name : name,
-                last_name : lastName, 
-                email : email, 
-                password : password,
+                name: name,
+                last_name: lastName,
+                email: email,
+                password: password,
             })
             .then((res) => {
                 console.log(res);
-                if(res.status == 200) {
+                if (res.status == 200) {
                     dispatch(setSession(res.data.id, name, lastName, email));
                     console.log("User created, id = " + res.data.id);
                     navigate("/main");
@@ -150,7 +150,7 @@ export const SignIn = () => {
                 console.log(err.response.data);
                 alert("Wystąpił błąd :(");
             });
-    }
+    };
 
     return (
         <div className="allContent">

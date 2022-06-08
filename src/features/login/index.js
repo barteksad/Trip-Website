@@ -5,7 +5,7 @@ import axios from "axios";
 import { backendUrl, login } from "../../routes";
 import { useDispatch } from "react-redux";
 import { setSession } from "../actions";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
     const [email, setEmail] = useState("");
@@ -18,12 +18,12 @@ export const Login = () => {
 
         axios
             .post(backendUrl + login, {
-                email : email, 
-                password : password,
+                email: email,
+                password: password,
             })
             .then((res) => {
                 console.log(res);
-                if(res.status == 200) {
+                if (res.status == 200) {
                     dispatch(setSession(res.data.id, "", "", email));
                     console.log("User created, id = " + res.data.id);
                     navigate("/main");
@@ -36,8 +36,8 @@ export const Login = () => {
                 console.log(err.response.data);
                 alert("Wystąpił błąd :(");
             });
-    }
-    
+    };
+
     return (
         <div className="allContent">
             <Header />
@@ -76,4 +76,4 @@ export const Login = () => {
             <Footer />
         </div>
     );
-}
+};

@@ -31,18 +31,18 @@ header nav {
     flex-direction: row;
 }
 
-#login-signin-menu{
+#login-signin-menu {
     display: flex;
     flex-direction: column;
     align-items: center;
-    align-content: space-around;    
+    align-content: space-around;
 }
 
 #logout {
     display: flex;
     flex-direction: row;
     align-items: center;
-    align-content: space-around;   
+    align-content: space-around;
 }
 
 header nav menu {

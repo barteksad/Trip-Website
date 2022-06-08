@@ -51,17 +51,17 @@ export const tripsReducer = (state = initialTripsState, action) => {
 };
 
 export const sessionReducer = (state = initialSessionState, action) => {
-        switch (action.type) {
-            case "SET_SESSION":
-                return {
-                    id : action.id,
-                    name: action.name,
-                    last_name: action.last_name,
-                    email: action.email,
-                }
-            case "LOGOUT" : 
-                return null;
-            default:
-                return state;
-        }
-}
+    switch (action.type) {
+        case "SET_SESSION":
+            return {
+                id: action.id,
+                name: action.name,
+                last_name: action.last_name,
+                email: action.email,
+            };
+        case "LOGOUT":
+            return null;
+        default:
+            return state;
+    }
+};
