@@ -39,7 +39,9 @@ const Trips = database.define("Trips", {
         validate: {
             isAfterBeginning(value) {
                 if (this.begin_date > value) {
-                    throw new Error("Data końca musi być po dacie początku!");
+                    throw new Error(
+                        "End date must be greater than beginning date!"
+                    );
                 }
             },
         },
@@ -48,9 +50,9 @@ const Trips = database.define("Trips", {
         type: DataTypes.INTEGER,
         validate: {
             mustBePositive(value) {
-                if (value < 1) {
+                if (value < 0) {
                     throw new Error(
-                        "Liczba dostępnych miejsc musi być dodatnia!"
+                        "Available places count can not be negative!"
                     );
                 }
             },
@@ -58,29 +60,72 @@ const Trips = database.define("Trips", {
     },
 });
 
-await Trips.sync({ force: true });
+const Users = database.define("Users", {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    last_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  });
+
+const Reservations = database.define("Reservations", {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    last_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    number_of_seats: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+});
 
 try {
-    // Sprawdzenie poprawności połączenia (authenticate; co się dzieje, gdy błąd?)
-    console.log("Nawiązuję połączenie z bazą...");
     await database.authenticate();
-
-    console.log("Udało się.");
-
-    // Jeśli modele zostały zmodyfikowane, to należy zmodyfikować tabele w bazie tak, by były zgodne.
-    // Co się stanie z danymi? (sync)
-    // console.log('Synchronizuję modele z zawartością bazy...');
-    // Trips.hasMany(Registrations);
     await Trips.sync({ force: true });
-    // await Registrations.sync({force: true});
-    console.log("Udało się.");
+    await Reservations.sync({force: true})
+    await Users.sync({force: true});
+
+   Trips.hasMany(Reservations, {
+       foreignKey: "myTripID"
+   });
+   Users.hasMany(Reservations, {
+       foreignKey: "myUserID"
+   });
 } catch (err) {
-    console.log("Błąd podczas łączenia się z bazą danych!");
     console.log(err);
 }
 
 try {
-    console.log("Zaczynam wstawiać ...");
     const trip1 = await Trips.build({
         id: 0,
         name: "Szczyt wszystkiego",
@@ -108,10 +153,8 @@ try {
 
     await trip2.save();
 
-    console.log("Udało się wstawić!");
 } catch (err) {
-    console.log("Błąd podczas wstawiania do bazy danych!");
     console.log(err);
 }
 
-export { database, Trips };
+export { database, Trips, Reservations, Users };

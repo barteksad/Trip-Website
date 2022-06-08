@@ -1,0 +1,30 @@
+.invalid_form {
+	background-color: red;
+}
+
+#name-input-error,
+#last-name-input-error ,
+#email-input-error ,
+#password-input-error,
+#confirm-password-input-error
+{
+	color: red;
+}
+
+#curtain {
+	width: 100vw;
+	height: 100vh;
+    top: 0;
+    left: 0;
+	position: fixed;
+	background: gray;
+	opacity: 0.5;
+	display: None;
+}
+#curtainButton {
+	width: 10vw;
+	height: 5vw;
+	position: relative;
+	left: 50vw;
+	top: 25vw;
+}

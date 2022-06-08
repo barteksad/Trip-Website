@@ -21,6 +21,14 @@ export const Header = () => {
                         <Link to={"/main"}> wycieczki piesze </Link>{" "}
                     </li>
                 </menu>
+                <menu id="login-signin-menu">
+                    <li>
+                        {" "}<Link to={"/login"}>login</Link>{" "}
+                    </li>
+                    <li>
+                        {" "}<Link to={"/signin"}>signin</Link>{" "}
+                    </li>
+                </menu>
             </nav>
         </header>
     );
