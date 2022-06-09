@@ -2,12 +2,13 @@ export const fetchTrips = () => ({
     type: "FETCH_TRIPS",
 });
 
-export const setSession = (name, id, last_name, email) => ({
+export const fetchAccount = () => ({
+    type: "FETCH_ACCOUNT",
+});
+
+export const setSession = (userId) => ({
     type: "SET_SESSION",
-    id,
-    name,
-    last_name,
-    email,
+    userId,
 });
 
 export const resetSession = () => ({

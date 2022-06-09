@@ -4,12 +4,14 @@ import sun from "../../static/sun.png";
 import { useSelector, useDispatch } from "react-redux";
 import { sessionSelector } from "../selectors";
 import { resetSession } from "../actions";
-
+import axios from "axios";
+import { backendUrl, logout } from "../../routes";
 export const Header = () => {
     const session = useSelector(sessionSelector);
     const dispatch = useDispatch();
 
     const handleLogout = () => {
+        axios.post(backendUrl + logout);
         dispatch(resetSession());
     };
 
@@ -31,9 +33,18 @@ export const Header = () => {
                         <Link to={"/main"}> wycieczki piesze </Link>{" "}
                     </li>
                 </menu>
-                {session ? (
-                    <menu id="logout">
-                        <button onClick={handleLogout}>logout</button>
+                {session.userId ? (
+                    <menu id="user-menu">
+                        <li>
+                            {" "}
+                            <Link to={"/main"} onClick={handleLogout}>
+                                logout
+                            </Link>{" "}
+                        </li>
+                        <li>
+                            {" "}
+                            <Link to={"/signin"}>my account</Link>{" "}
+                        </li>
                     </menu>
                 ) : (
                     <menu id="login-signin-menu">

@@ -17,24 +17,34 @@ export const Login = () => {
         event.preventDefault();
 
         axios
-            .post(backendUrl + login, {
-                email: email,
-                password: password,
-            })
+            .post(
+                backendUrl + login,
+                {
+                    email: email,
+                    password: password,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    withCredentials: true,
+                }
+            )
             .then((res) => {
-                console.log(res);
                 if (res.status == 200) {
-                    dispatch(setSession(res.data.id, "", "", email));
-                    console.log("User created, id = " + res.data.id);
-                    navigate("/main");
+                    if (res.data.userId == null) {
+                        alert(res.data.error);
+                    } else {
+                        dispatch(setSession(res.data.userId));
+                        navigate("/main");
+                    }
                 } else {
-                    alert("Wystąpił błąd :(");
+                    alert("Error connectiong to backend");
                 }
             })
             .catch((err) => {
                 console.log(err);
-                console.log(err.response.data);
-                alert("Wystąpił błąd :(");
+                alert("Error connectiong to backend");
             });
     };
 
@@ -70,7 +80,9 @@ export const Login = () => {
                         <span id="password-input-error"></span>
                     </div>
 
-                    <button type="submit" value="submit"></button>
+                    <button type="submit" value="submit">
+                        submit
+                    </button>
                 </form>
             </div>
             <Footer />

@@ -7,7 +7,7 @@ import { backendUrl, signin } from "../../routes";
 import { useDispatch } from "react-redux";
 import { setSession } from "../actions";
 import { useNavigate } from "react-router-dom";
-
+axios.defaults.withCredentials = true;
 export const SignIn = () => {
     const [name, setName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -80,19 +80,24 @@ export const SignIn = () => {
         const passwordsSame = password == confirmPassword;
         console.log(passwordsSame);
         if (len === 0 || len > 40 || !passwordsSame) {
-            password_input.classList.add("invalid-form");
-            password_input_error.textContent =
-                "password must be between 1 and 40 characters!";
+            if (len === 0 || len > 40) {
+                password_input.classList.add("invalid-form");
+                password_input_error.textContent =
+                    "password must be between 1 and 40 characters!";
+            } else {
+                password_input.classList.remove("invalid-form");
+                password_input_error.textContent = "";
+            }
             if (!passwordsSame) {
                 confirm_password_input_error.classList.add("invalid-form");
                 confirm_password_input_error.textContent =
                     "passwords must be the same!";
+            } else {
+                confirm_password_input_error.classList.remove("invalid-form");
+                confirm_password_input_error.textContent = "";
             }
             return false;
         } else {
-            password_input.classList.remove("invalid-form");
-            password_input_error.textContent = "";
-            confirm_password_input_error.textContent = "";
             return true;
         }
     };
@@ -126,29 +131,39 @@ export const SignIn = () => {
         const allOk = nameOk && lastNameOk && emailOk && passwordOk;
         if (!allOk) {
             event.stopPropagation();
+            return;
         }
 
         axios
-            .post(backendUrl + signin, {
-                name: name,
-                last_name: lastName,
-                email: email,
-                password: password,
-            })
+            .post(
+                backendUrl + signin,
+                {
+                    name: name,
+                    last_name: lastName,
+                    email: email,
+                    password: password,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    withCredentials: true,
+                }
+            )
             .then((res) => {
                 console.log(res);
                 if (res.status == 200) {
-                    dispatch(setSession(res.data.id, name, lastName, email));
+                    dispatch(setSession(res.data.userId));
                     console.log("User created, id = " + res.data.id);
                     navigate("/main");
                 } else {
-                    alert("Wystąpił błąd :(");
+                    alert("Error connectiong to backend!");
                 }
             })
             .catch((err) => {
                 console.log(err);
                 console.log(err.response.data);
-                alert("Wystąpił błąd :(");
+                alert("Error connectiong to backend!");
             });
     };
 
@@ -223,7 +238,9 @@ export const SignIn = () => {
                         ></input>
                         <span id="confirm-password-input-error"></span>
                     </div>
-                    <button type="submit" value="submit"></button>
+                    <button type="submit" value="submit">
+                        submit
+                    </button>
                 </form>
             </div>
             <Footer />

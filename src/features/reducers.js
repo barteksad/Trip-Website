@@ -1,4 +1,5 @@
 export const TripsState = {};
+export const AccountState = {};
 
 function define(object, name, value) {
     Object.defineProperty(object, name, {
@@ -12,14 +13,26 @@ define(TripsState, "UP_TO_DATE", "UP_TO_DATE");
 define(TripsState, "FETCHING", "FETCHING");
 define(TripsState, "OLDATED", "OLDATED");
 
+define(AccountState, "UP_TO_DATE", "UP_TO_DATE");
+define(AccountState, "FETCHING", "FETCHING");
+define(AccountState, "OLDATED", "OLDATED");
+
 Object.freeze(TripsState);
+Object.freeze(AccountState);
 
 const initialTripsState = {
     fetchState: TripsState.OLDATED,
     data: [],
 };
 
-const initialSessionState = null;
+const initialAccountState = {
+    fetchState: AccountState.OLDATED,
+    data: [],
+};
+
+const initialSessionState = {
+    userId: null,
+};
 
 /*
     id
@@ -50,17 +63,33 @@ export const tripsReducer = (state = initialTripsState, action) => {
     }
 };
 
+export const accountReducer = (state = initialAccountState, action) => {
+    switch (action.type) {
+        case "FETCH_SUCCESS":
+            return {
+                fetchState: AccountState.UP_TO_DATE,
+                data: action.reservations,
+            };
+        case "FETCH_REQUEST":
+            return {
+                ...state,
+                fetchState: AccountState.FETCHING,
+            };
+        default:
+            return state;
+    }
+};
+
 export const sessionReducer = (state = initialSessionState, action) => {
     switch (action.type) {
         case "SET_SESSION":
             return {
-                id: action.id,
-                name: action.name,
-                last_name: action.last_name,
-                email: action.email,
+                userId: action.userId,
             };
         case "LOGOUT":
-            return null;
+            return {
+                userId: null,
+            };
         default:
             return state;
     }
