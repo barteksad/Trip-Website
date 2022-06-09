@@ -12,15 +12,16 @@ export const Account = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        console.log("HDHDHDDH\n\n");
         dispatch(fetchAccount());
     }, [dispatch, accountState.fetchState]);
-
+    console.log(accountState);
     return (
         <div className="allContent">
             <Header />
             <div className="main">
-                {accountState.data.map((trip) => (
-                    <Reservation key={trip.id} id={trip.id} />
+                {accountState.data.map((reservation) => (
+                    <Reservation key={reservation.id} id={reservation.id} />
                 ))}
             </div>
             <Footer />

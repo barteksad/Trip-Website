@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Header } from "../header";
 import { Footer } from "../footer";
 import "./signin.css";
-import axios from "axios";
 import { backendUrl, signin } from "../../routes";
 import { useDispatch } from "react-redux";
 import { setSession } from "../actions";
 import { useNavigate } from "react-router-dom";
-axios.defaults.withCredentials = true;
+
+import { postData } from "../utils";
+// import axios from "axios";
+// axios.defaults.withCredentials = true;
+
 export const SignIn = () => {
     const [name, setName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -134,37 +137,60 @@ export const SignIn = () => {
             return;
         }
 
-        axios
-            .post(
-                backendUrl + signin,
-                {
-                    name: name,
-                    last_name: lastName,
-                    email: email,
-                    password: password,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    withCredentials: true,
-                }
-            )
-            .then((res) => {
-                console.log(res);
-                if (res.status == 200) {
-                    dispatch(setSession(res.data.userId));
-                    console.log("User created, id = " + res.data.id);
-                    navigate("/main");
-                } else {
+        try {
+            postData(backendUrl + signin, {
+                name: name,
+                last_name: lastName,
+                email: email,
+                password: password,
+            }).then((response) => {
+                if (!response.ok) {
                     alert("Error connectiong to backend!");
+                    throw new Error(`HTTP error: ${response.status}`);
+                } else {
+                    return response.json();
                 }
             })
-            .catch((err) => {
-                console.log(err);
-                console.log(err.response.data);
-                alert("Error connectiong to backend!");
-            });
+            .then((data) => {
+                console.log(data);
+                dispatch(setSession(data.userId));
+                navigate("/main");
+            }) 
+        } catch {
+            alert("Error connectiong to backend!");
+        }
+
+    //     axios
+    //         .post(
+    //             backendUrl + signin,
+    //             {
+    //                 name: name,
+    //                 last_name: lastName,
+    //                 email: email,
+    //                 password: password,
+    //             },
+    //             {
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                 },
+    //                 withCredentials: true,
+    //             }
+    //         )
+    //         .then((res) => {
+    //             console.log(res);
+    //             if (res.status == 200) {
+    //                 dispatch(setSession(res.data.userId));
+    //                 console.log("User created, id = " + res.data.id);
+    //                 navigate("/main");
+    //             } else {
+    //                 alert("Error connectiong to backend!");
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //             console.log(err.response.data);
+    //             alert("Error connectiong to backend!");
+    //         });
     };
 
     return (

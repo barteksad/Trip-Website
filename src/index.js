@@ -14,7 +14,7 @@ import { TripPage } from "./features/trip";
 import { Login } from "./features/login";
 import { SignIn } from "./features/signin";
 import { Reserve } from "./features/reserve";
-
+import { Account } from "./features/account";
 import axios from "axios";
 // axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
 axios.defaults.withCredentials = true;
@@ -31,7 +31,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 <Route path="/login" element={<Login />} />
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/reserve/:id" element={<Reserve />} />
-                <Route path="/account" element={<Reserve />} />
+                <Route path="/account" element={<Account />} />
             </Routes>
         </Router>
     </Provider>
