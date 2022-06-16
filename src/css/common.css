@@ -26,6 +26,27 @@ header {
     display: flex;
 }
 
+header nav {
+    display: flex;
+    flex-direction: row;
+}
+
+#login-signin-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: space-around;
+    font-weight: bold;
+}
+
+#user-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: space-around;
+    font-weight: bold;
+}
+
 header nav menu {
     display: flex;
     flex-direction: row;

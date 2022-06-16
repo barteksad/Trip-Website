@@ -1,47 +1,80 @@
-export const TripsState = {};
+export const FetchState = {};
 
-function define(name, value) {
-    Object.defineProperty(TripsState, name, {
+function define(object, name, value) {
+    Object.defineProperty(object, name, {
         value: value,
         writable: false,
         enumerable: true,
     });
 }
 
-define("UP_TO_DATE", "UP_TO_DATE");
-define("FETCHING", "FETCHING");
-define("OLDATED", "OLDATED");
+define(FetchState, "UP_TO_DATE", "UP_TO_DATE");
+define(FetchState, "FETCHING", "FETCHING");
+define(FetchState, "OLDATED", "OLDATED");
 
-Object.freeze(TripsState);
+Object.freeze(FetchState);
 
-const initialState = {
-    fetchState: TripsState.OLDATED,
+const initialTripsState = {
+    fetchState: FetchState.OLDATED,
     data: [],
 };
 
-/*
-    id
-    name
-    description
-    short_descripition
-    image
-    price
-    begin_date
-    end_data
-    available_places
-*/
+const initialAccountState = {
+    fetchState: FetchState.OLDATED,
+    data: [],
+};
 
-export const tripsReducer = (state = initialState, action) => {
+const initialSessionState = {
+    userId: null,
+};
+
+export const tripsReducer = (state = initialTripsState, action) => {
     switch (action.type) {
-        case "FETCH_SUCCESS":
+        case "TRIPS_FETCH_SUCCESS":
             return {
-                fetchState: TripsState.UP_TO_DATE,
+                fetchState: FetchState.UP_TO_DATE,
                 data: action.trips,
             };
-        case "FETCH_REQUEST":
+        case "TRIPS_FETCH_REQUEST":
             return {
                 ...state,
-                fetchState: TripsState.FETCHING,
+                fetchState: FetchState.FETCHING,
+            };
+        case "TRIPS_OUTDATE":
+            return initialTripsState;
+        default:
+            return state;
+    }
+};
+
+export const accountReducer = (state = initialAccountState, action) => {
+    switch (action.type) {
+        case "ACCOUNT_FETCH_SUCCESS":
+            return {
+                fetchState: FetchState.UP_TO_DATE,
+                data: action.reservations,
+            };
+        case "ACCOUNT_FETCH_REQUEST":
+            return {
+                ...state,
+                fetchState: FetchState.FETCHING,
+            };
+        case "ACCOUNT_OUTDATE":
+            return initialAccountState;
+        default:
+            return state;
+    }
+};
+
+export const sessionReducer = (state = initialSessionState, action) => {
+    switch (action.type) {
+        case "SET_SESSION":
+            return {
+                userId: action.userId,
+            };
+        case "LOGOUT":
+            return {
+                userId: null,
             };
         default:
             return state;

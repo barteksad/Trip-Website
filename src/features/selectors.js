@@ -9,3 +9,19 @@ export function tripByIdSelector(id) {
         });
     };
 }
+
+export function sessionSelector(state) {
+    return state.session;
+}
+
+export function accountSelector(state) {
+    return state.account;
+}
+
+export function reservationSelector(id) {
+    return (state) => {
+        return state.account.data.find((reservation) => {
+            return reservation.id == id;
+        });
+    };
+}
