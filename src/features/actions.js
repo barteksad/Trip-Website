@@ -3,8 +3,8 @@ export const fetchTrips = () => ({
 });
 
 export const outdateTrips = () => ({
-    type: "TRIPS_OUTDATE"
-})
+    type: "TRIPS_OUTDATE",
+});
 
 export const fetchAccount = () => ({
     type: "FETCH_ACCOUNT",
@@ -12,7 +12,7 @@ export const fetchAccount = () => ({
 
 export const outdateAccount = () => ({
     type: "ACCOUNT_OUTDATE",
-})
+});
 
 export const setSession = (userId) => ({
     type: "SET_SESSION",

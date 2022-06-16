@@ -22,6 +22,6 @@ export function reservationSelector(id) {
     return (state) => {
         return state.account.data.find((reservation) => {
             return reservation.id == id;
-        })
-    }
+        });
+    };
 }

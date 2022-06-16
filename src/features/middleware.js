@@ -15,7 +15,6 @@ const fetchTripsError = () => ({
     type: "TRIPS_FETCH_ERROR",
 });
 
-
 const fetchAccountRequest = () => ({
     type: "ACCOUNT_FETCH_REQUEST",
 });
@@ -28,7 +27,6 @@ const fetchAccountSuccess = (reservations) => ({
 const fetchAccountError = () => ({
     type: "ACCOUNT_FETCH_ERROR",
 });
-
 
 export const BackendMiddleware = (storeAPI) => (next) => (action) => {
     if (action.type === "FETCH_TRIPS") {
@@ -55,8 +53,7 @@ export const BackendMiddleware = (storeAPI) => (next) => (action) => {
         if (storeAPI.getState().account.fetchState === FetchState.OLDATED) {
             storeAPI.dispatch(fetchAccountRequest());
             axios
-                .get(backendUrl + getAccount, 
-                    {
+                .get(backendUrl + getAccount, {
                     headers: {
                         "Content-Type": "application/json",
                     },
@@ -64,7 +61,9 @@ export const BackendMiddleware = (storeAPI) => (next) => (action) => {
                 })
                 .then((res) => {
                     console.log(res.data);
-                    storeAPI.dispatch(fetchAccountSuccess(res.data.reservations));
+                    storeAPI.dispatch(
+                        fetchAccountSuccess(res.data.reservations)
+                    );
                 })
                 .catch((err) => {
                     console.log(err);

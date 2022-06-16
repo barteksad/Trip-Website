@@ -9,11 +9,11 @@ import { fetchAccount } from "../actions";
 export const Account = () => {
     const accountState = useSelector(accountSelector);
     const dispatch = useDispatch();
-    
+
     useEffect(() => {
         dispatch(fetchAccount());
     });
-    
+
     return (
         <div className="allContent">
             <Header />
