@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { tripByIdSelector } from "../selectors";
 import { Header } from "../header";
 import { Footer } from "../footer";
 import axios from "axios";
 import { backendUrl, reserve } from "../../routes";
 import { useNavigate } from "react-router-dom";
+import { outdateTrips, outdateAccount } from "../actions";
 axios.defaults.withCredentials = true;
 export const Reserve = () => {
     const { id } = useParams();
     const [count, setCount] = useState(1);
     const tripState = useSelector(tripByIdSelector(parseInt(id)));
     const navigate = useNavigate();
-
+    const dispatch = useDispatch();
     const checkCount = () => {
         const count_input = document.getElementById("count-input");
         const count_input_error = document.getElementById("count-input-error");
@@ -47,7 +48,7 @@ export const Reserve = () => {
                 backendUrl + reserve,
                 {
                     count: count,
-                    tripId: id,
+                    tripId: parseInt(id),
                 },
                 {
                     headers: {
@@ -57,9 +58,10 @@ export const Reserve = () => {
                 }
             )
             .then((res) => {
-                console.log(res);
                 if (res.status == 200) {
                     if (res.data.error == null) {
+                        dispatch(outdateAccount());
+                        dispatch(outdateTrips());
                         navigate("/account");
                     } else {
                         alert(res.data.error);

@@ -43,7 +43,7 @@ export const Header = () => {
                         </li>
                         <li>
                             {" "}
-                            <Link to={"/signin"}>my account</Link>{" "}
+                            <Link to={"/account"}>my account</Link>{" "}
                         </li>
                     </menu>
                 ) : (

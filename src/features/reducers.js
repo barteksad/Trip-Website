@@ -1,5 +1,4 @@
-export const TripsState = {};
-export const AccountState = {};
+export const FetchState = {};
 
 function define(object, name, value) {
     Object.defineProperty(object, name, {
@@ -9,24 +8,19 @@ function define(object, name, value) {
     });
 }
 
-define(TripsState, "UP_TO_DATE", "UP_TO_DATE");
-define(TripsState, "FETCHING", "FETCHING");
-define(TripsState, "OLDATED", "OLDATED");
+define(FetchState, "UP_TO_DATE", "UP_TO_DATE");
+define(FetchState, "FETCHING", "FETCHING");
+define(FetchState, "OLDATED", "OLDATED");
 
-define(AccountState, "UP_TO_DATE", "UP_TO_DATE");
-define(AccountState, "FETCHING", "FETCHING");
-define(AccountState, "OLDATED", "OLDATED");
-
-Object.freeze(TripsState);
-Object.freeze(AccountState);
+Object.freeze(FetchState);
 
 const initialTripsState = {
-    fetchState: TripsState.OLDATED,
+    fetchState: FetchState.OLDATED,
     data: [],
 };
 
 const initialAccountState = {
-    fetchState: AccountState.OLDATED,
+    fetchState: FetchState.OLDATED,
     data: [],
 };
 
@@ -34,30 +28,20 @@ const initialSessionState = {
     userId: null,
 };
 
-/*
-    id
-    name
-    description
-    short_descripition
-    image
-    price
-    begin_date
-    end_data
-    available_places
-*/
-
 export const tripsReducer = (state = initialTripsState, action) => {
     switch (action.type) {
-        case "FETCH_SUCCESS":
+        case "TRIPS_FETCH_SUCCESS":
             return {
-                fetchState: TripsState.UP_TO_DATE,
+                fetchState: FetchState.UP_TO_DATE,
                 data: action.trips,
             };
-        case "FETCH_REQUEST":
+        case "TRIPS_FETCH_REQUEST":
             return {
                 ...state,
-                fetchState: TripsState.FETCHING,
+                fetchState: FetchState.FETCHING,
             };
+        case "TRIPS_OUTDATE":
+            return initialTripsState;
         default:
             return state;
     }
@@ -65,16 +49,18 @@ export const tripsReducer = (state = initialTripsState, action) => {
 
 export const accountReducer = (state = initialAccountState, action) => {
     switch (action.type) {
-        case "FETCH_SUCCESS":
+        case "ACCOUNT_FETCH_SUCCESS":
             return {
-                fetchState: AccountState.UP_TO_DATE,
+                fetchState: FetchState.UP_TO_DATE,
                 data: action.reservations,
             };
-        case "FETCH_REQUEST":
+        case "ACCOUNT_FETCH_REQUEST":
             return {
                 ...state,
-                fetchState: AccountState.FETCHING,
+                fetchState: FetchState.FETCHING,
             };
+        case "ACCOUNT_OUTDATE":
+            return initialAccountState;
         default:
             return state;
     }

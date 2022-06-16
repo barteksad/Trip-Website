@@ -7,6 +7,7 @@ import { backendUrl, signin } from "../../routes";
 import { useDispatch } from "react-redux";
 import { setSession } from "../actions";
 import { useNavigate } from "react-router-dom";
+
 axios.defaults.withCredentials = true;
 export const SignIn = () => {
     const [name, setName] = useState("");
@@ -78,28 +79,31 @@ export const SignIn = () => {
             "confirm-password-input-error"
         );
         const passwordsSame = password == confirmPassword;
-        console.log(passwordsSame);
+
+        if (len === 0 || len > 40) {
+            password_input.classList.add("invalid-form");
+            password_input_error.textContent =
+                "password must be between 1 and 40 characters!";
+        } else {
+            password_input.classList.remove("invalid-form");
+            password_input_error.textContent = "";
+        }
+
+        if (!passwordsSame) {
+            confirm_password_input_error.classList.add("invalid-form");
+            confirm_password_input_error.textContent =
+                "passwords must be the same!";
+        } else {
+            confirm_password_input_error.classList.remove("invalid-form");
+            confirm_password_input_error.textContent = "";
+        }
+
         if (len === 0 || len > 40 || !passwordsSame) {
-            if (len === 0 || len > 40) {
-                password_input.classList.add("invalid-form");
-                password_input_error.textContent =
-                    "password must be between 1 and 40 characters!";
-            } else {
-                password_input.classList.remove("invalid-form");
-                password_input_error.textContent = "";
-            }
-            if (!passwordsSame) {
-                confirm_password_input_error.classList.add("invalid-form");
-                confirm_password_input_error.textContent =
-                    "passwords must be the same!";
-            } else {
-                confirm_password_input_error.classList.remove("invalid-form");
-                confirm_password_input_error.textContent = "";
-            }
             return false;
         } else {
             return true;
         }
+
     };
 
     useEffect(() => {
@@ -154,7 +158,7 @@ export const SignIn = () => {
                 console.log(res);
                 if (res.status == 200) {
                     dispatch(setSession(res.data.userId));
-                    console.log("User created, id = " + res.data.id);
+                    console.log("User created, id = " + res.data.userId);
                     navigate("/main");
                 } else {
                     alert("Error connectiong to backend!");
