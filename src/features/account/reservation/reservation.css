@@ -1,0 +1,26 @@
+.main-reservation-info {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+}
+
+.detail-reservation-info {
+    display: flex;
+    flex-direction: column;
+    align-items: space-around;
+    font-weight: lighter;
+    color: rgb(89, 88, 88);
+}
+
+.reservation {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.reservation-trip-data {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}

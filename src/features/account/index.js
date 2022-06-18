@@ -4,7 +4,7 @@ import { accountSelector } from "../selectors";
 import { Header } from "../header";
 import { Footer } from "../footer";
 import { Reservation } from "./reservation";
-import { fetchAccount } from "../actions";
+import { fetchAccount, fetchTrips } from "../actions";
 
 export const Account = () => {
     const accountState = useSelector(accountSelector);
@@ -12,6 +12,7 @@ export const Account = () => {
 
     useEffect(() => {
         dispatch(fetchAccount());
+        dispatch(fetchTrips());
     });
 
     return (

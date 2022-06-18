@@ -15,6 +15,7 @@ export const Reserve = () => {
     const tripState = useSelector(tripByIdSelector(parseInt(id)));
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
     const checkCount = () => {
         const count_input = document.getElementById("count-input");
         const count_input_error = document.getElementById("count-input-error");
@@ -36,7 +37,7 @@ export const Reserve = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [count]);
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
         if (!checkCount()) {
             event.stopPropagation();
@@ -76,7 +77,14 @@ export const Reserve = () => {
                 alert("Error connectiong to backend!");
             });
     };
-
+    if (tripState == undefined) {
+        return (
+            <div className="main">
+                <Header />
+                <Footer />
+            </div>
+        );
+    }
     return (
         <div className="main">
             <Header />
