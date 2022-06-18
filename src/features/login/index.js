@@ -32,10 +32,10 @@ export const Login = () => {
             )
             .then((res) => {
                 if (res.status == 200) {
-                    if (res.data.userId == null) {
+                    if (res.data.loggedIn == false) {
                         alert(res.data.error);
                     } else {
-                        dispatch(setSession(res.data.userId));
+                        dispatch(setSession());
                         navigate("/main");
                     }
                 } else {

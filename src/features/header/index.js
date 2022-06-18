@@ -33,7 +33,7 @@ export const Header = () => {
                         <Link to={"/main"}> wycieczki piesze </Link>{" "}
                     </li>
                 </menu>
-                {session.userId ? (
+                {session.loggedIn == true ? (
                     <menu id="user-menu">
                         <li>
                             {" "}

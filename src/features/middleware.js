@@ -1,6 +1,7 @@
-import axios from "axios";
 import { backendUrl, getTrips, getAccount } from "../routes.js";
 import { FetchState } from "./reducers";
+import { getData } from "./utils.js";
+// import { postData, getData } from "./utils.js";
 
 const fetchTripsRequest = () => ({
     type: "TRIPS_FETCH_REQUEST",
@@ -21,7 +22,7 @@ const fetchAccountRequest = () => ({
 
 const fetchAccountSuccess = (reservations) => ({
     type: "ACCOUNT_FETCH_SUCCESS",
-    reservations,
+    reservations: reservations.reservations,
 });
 
 const fetchAccountError = () => ({
@@ -32,17 +33,11 @@ export const BackendMiddleware = (storeAPI) => (next) => (action) => {
     if (action.type === "FETCH_TRIPS") {
         if (storeAPI.getState().trips.fetchState === FetchState.OLDATED) {
             storeAPI.dispatch(fetchTripsRequest());
-            axios
-                .get(backendUrl + getTrips, {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    withCredentials: true,
-                })
-                .then((res) => {
-                    storeAPI.dispatch(fetchTripsSuccess(res.data));
-                })
+            getData(backendUrl + getTrips)
+                .then((response) => response.json())
+                .then((data) => storeAPI.dispatch(fetchTripsSuccess(data)))
                 .catch((err) => {
+                    console.log("Error fetching trips!");
                     console.log(err);
                     storeAPI.dispatch(fetchTripsError());
                 });
@@ -51,24 +46,19 @@ export const BackendMiddleware = (storeAPI) => (next) => (action) => {
 
     if (action.type === "FETCH_ACCOUNT") {
         if (storeAPI.getState().account.fetchState === FetchState.OLDATED) {
-            storeAPI.dispatch(fetchAccountRequest());
-            axios
-                .get(backendUrl + getAccount, {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    withCredentials: true,
-                })
-                .then((res) => {
-                    console.log(res.data);
-                    storeAPI.dispatch(
-                        fetchAccountSuccess(res.data.reservations)
-                    );
-                })
-                .catch((err) => {
-                    console.log(err);
-                    storeAPI.dispatch(fetchAccountError());
-                });
+            if (storeAPI.getState().trips.fetchState === FetchState.OLDATED) {
+                storeAPI.dispatch(fetchAccountRequest());
+                getData(backendUrl + getAccount)
+                    .then((response) => response.json())
+                    .then((data) =>
+                        storeAPI.dispatch(fetchAccountSuccess(data))
+                    )
+                    .catch((err) => {
+                        console.log("Error fetching account!");
+                        console.log(err);
+                        storeAPI.dispatch(fetchAccountError());
+                    });
+            }
         }
     }
 

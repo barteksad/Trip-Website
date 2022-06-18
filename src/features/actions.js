@@ -14,9 +14,8 @@ export const outdateAccount = () => ({
     type: "ACCOUNT_OUTDATE",
 });
 
-export const setSession = (userId) => ({
+export const setSession = () => ({
     type: "SET_SESSION",
-    userId,
 });
 
 export const resetSession = () => ({

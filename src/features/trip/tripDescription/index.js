@@ -22,7 +22,7 @@ export const TripDescription = (props) => {
                 <div className="div_na_cene_i_rezerwacje">
                     <p>price : {tripState.price}</p>
                     <p>available places : {tripState.available_places}</p>
-                    {session.userId ? (
+                    {session.loggedIn == true ? (
                         <Link to={`/reserve/${id}`}>reserve {">>"}</Link>
                     ) : (
                         <Link to={`/login`}>reserve {">>"}</Link>

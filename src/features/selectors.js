@@ -20,7 +20,7 @@ export function accountSelector(state) {
 
 export function reservationSelector(id) {
     return (state) => {
-        return state.account.data.find((reservation) => {
+        return state.account.reservations.find((reservation) => {
             return reservation.id == id;
         });
     };

@@ -17,7 +17,8 @@ export const TripPage = () => {
 
     useEffect(() => {
         dispatch(fetchTrips());
-    }, [dispatch, tripsState.fetchState]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [tripsState.fetchState]);
 
     return (
         <div className="allContent">

@@ -15,9 +15,6 @@ import { Login } from "./features/login";
 import { SignIn } from "./features/signin";
 import { Reserve } from "./features/reserve";
 import { Account } from "./features/account";
-import axios from "axios";
-// axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
-axios.defaults.withCredentials = true;
 
 const middleware = applyMiddleware(BackendMiddleware);
 const store = createStore(createReducer(), middleware);

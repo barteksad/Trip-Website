@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Header } from "../header";
-import { Footer } from "../footer";
-import "./signin.css";
-import axios from "axios";
-import { backendUrl, signin } from "../../routes";
+import React from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setSession } from "../actions";
 import { useNavigate } from "react-router-dom";
+import { backendUrl, signin } from "../../routes";
+import { setSession } from "../actions";
+import { Footer } from "../footer";
+import { Header } from "../header";
+import { postData } from "../utils";
+import "./signin.css";
 
-axios.defaults.withCredentials = true;
 export const SignIn = () => {
     const [name, setName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -105,6 +105,16 @@ export const SignIn = () => {
         }
     };
 
+    const checkaAll = () => {
+        const nameOk = checkName();
+        const lastNameOk = checkLastName();
+        const emailOk = checkEmail();
+        const passwordOk = checkPassword();
+        const allOk = nameOk && lastNameOk && emailOk && passwordOk;
+
+        return allOk;
+    };
+
     useEffect(() => {
         checkName();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -127,45 +137,31 @@ export const SignIn = () => {
 
     const handleSumbit = async (event) => {
         event.preventDefault();
-        const nameOk = checkName();
-        const lastNameOk = checkLastName();
-        const emailOk = checkEmail();
-        const passwordOk = checkPassword();
-        const allOk = nameOk && lastNameOk && emailOk && passwordOk;
-        if (!allOk) {
+
+        if (!checkaAll()) {
             event.stopPropagation();
             return;
         }
 
-        axios
-            .post(
-                backendUrl + signin,
-                {
-                    name: name,
-                    last_name: lastName,
-                    email: email,
-                    password: password,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    withCredentials: true,
+        const signInData = {
+            name: name,
+            last_name: lastName,
+            email: email,
+            password: password,
+        };
+
+        postData(backendUrl + signin, signInData)
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.error != null) {
+                    alert(data.error);
+                    return;
                 }
-            )
-            .then((res) => {
-                console.log(res);
-                if (res.status == 200) {
-                    dispatch(setSession(res.data.userId));
-                    console.log("User created, id = " + res.data.userId);
-                    navigate("/main");
-                } else {
-                    alert("Error connectiong to backend!");
-                }
+                dispatch(setSession());
+                navigate("/main");
             })
             .catch((err) => {
                 console.log(err);
-                console.log(err.response.data);
                 alert("Error connectiong to backend!");
             });
     };

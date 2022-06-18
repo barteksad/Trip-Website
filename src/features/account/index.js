@@ -13,15 +13,19 @@ export const Account = () => {
     useEffect(() => {
         dispatch(fetchAccount());
         dispatch(fetchTrips());
-    });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [accountState.fetchState]);
+
+    console.log(accountState);
 
     return (
         <div className="allContent">
             <Header />
             <div className="main">
-                {accountState.data.map((reservation) => (
-                    <Reservation key={reservation.id} id={reservation.id} />
-                ))}
+                {accountState.reservations &&
+                    accountState.reservations.map((reservation) => (
+                        <Reservation key={reservation.id} id={reservation.id} />
+                    ))}
             </div>
             <Footer />
         </div>

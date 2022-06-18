@@ -25,7 +25,7 @@ const initialAccountState = {
 };
 
 const initialSessionState = {
-    userId: null,
+    loggedIn: false,
 };
 
 export const tripsReducer = (state = initialTripsState, action) => {
@@ -50,9 +50,10 @@ export const tripsReducer = (state = initialTripsState, action) => {
 export const accountReducer = (state = initialAccountState, action) => {
     switch (action.type) {
         case "ACCOUNT_FETCH_SUCCESS":
+            console.log(action);
             return {
                 fetchState: FetchState.UP_TO_DATE,
-                data: action.reservations,
+                reservations: action.reservations,
             };
         case "ACCOUNT_FETCH_REQUEST":
             return {
@@ -70,11 +71,11 @@ export const sessionReducer = (state = initialSessionState, action) => {
     switch (action.type) {
         case "SET_SESSION":
             return {
-                userId: action.userId,
+                loggedIn: true,
             };
         case "LOGOUT":
             return {
-                userId: null,
+                loggedIn: false,
             };
         default:
             return state;
