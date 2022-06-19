@@ -18,6 +18,10 @@ export function accountSelector(state) {
     return state.account;
 }
 
+export function loggedInSelector(state) {
+    return state.session.loggedIn;
+}
+
 export function reservationSelector(id) {
     return (state) => {
         return state.account.reservations.find((reservation) => {

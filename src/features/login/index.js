@@ -1,17 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Header } from "../header";
 import { Footer } from "../footer";
 import axios from "axios";
 import { backendUrl, login } from "../../routes";
-import { useDispatch } from "react-redux";
-import { setSession } from "../actions";
+import { useDispatch, useSelector } from "react-redux";
+import { outdateAccount, setSession } from "../actions";
 import { useNavigate } from "react-router-dom";
+import { loggedInSelector } from "../selectors";
 
 export const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const loggedInState = useSelector(loggedInSelector);
+
+    useEffect(() => {
+        if (loggedInState) {
+            navigate("/account");
+        }
+    }, [loggedInState, navigate]);
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     const handleSumbit = async (event) => {
         event.preventDefault();
@@ -36,6 +45,7 @@ export const Login = () => {
                         alert(res.data.error);
                     } else {
                         dispatch(setSession());
+                        dispatch(outdateAccount());
                         navigate("/main");
                     }
                 } else {

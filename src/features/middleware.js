@@ -46,19 +46,15 @@ export const BackendMiddleware = (storeAPI) => (next) => (action) => {
 
     if (action.type === "FETCH_ACCOUNT") {
         if (storeAPI.getState().account.fetchState === FetchState.OLDATED) {
-            if (storeAPI.getState().trips.fetchState === FetchState.OLDATED) {
-                storeAPI.dispatch(fetchAccountRequest());
-                getData(backendUrl + getAccount)
-                    .then((response) => response.json())
-                    .then((data) =>
-                        storeAPI.dispatch(fetchAccountSuccess(data))
-                    )
-                    .catch((err) => {
-                        console.log("Error fetching account!");
-                        console.log(err);
-                        storeAPI.dispatch(fetchAccountError());
-                    });
-            }
+            storeAPI.dispatch(fetchAccountRequest());
+            getData(backendUrl + getAccount)
+                .then((response) => response.json())
+                .then((data) => storeAPI.dispatch(fetchAccountSuccess(data)))
+                .catch((err) => {
+                    console.log("Error fetching account!");
+                    console.log(err);
+                    storeAPI.dispatch(fetchAccountError());
+                });
         }
     }
 

@@ -1,22 +1,32 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { backendUrl, signin } from "../../routes";
-import { setSession } from "../actions";
+import { outdateAccount, outdateTrips, setSession } from "../actions";
 import { Footer } from "../footer";
 import { Header } from "../header";
+import { loggedInSelector } from "../selectors";
 import { postData } from "../utils";
 import "./signin.css";
 
 export const SignIn = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const loggedInState = useSelector(loggedInSelector);
+    console.log("login state = " + loggedInState);
+
+    useEffect(() => {
+        if (loggedInState) {
+            navigate("/account");
+        }
+    }, [loggedInState, navigate]);
+
     const [name, setName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const checkName = () => {
         const len = name.length;
@@ -158,6 +168,8 @@ export const SignIn = () => {
                     return;
                 }
                 dispatch(setSession());
+                dispatch(outdateAccount());
+                dispatch(outdateTrips());
                 navigate("/main");
             })
             .catch((err) => {

@@ -21,7 +21,7 @@ const initialTripsState = {
 
 const initialAccountState = {
     fetchState: FetchState.OLDATED,
-    data: [],
+    reservations: [],
 };
 
 const initialSessionState = {

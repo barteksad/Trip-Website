@@ -3,16 +3,27 @@ import { Link } from "react-router-dom";
 import sun from "../../static/sun.png";
 import { useSelector, useDispatch } from "react-redux";
 import { sessionSelector } from "../selectors";
-import { resetSession } from "../actions";
-import axios from "axios";
+import { outdateAccount, resetSession } from "../actions";
 import { backendUrl, logout } from "../../routes";
+import { postData } from "../utils";
 export const Header = () => {
     const session = useSelector(sessionSelector);
     const dispatch = useDispatch();
 
     const handleLogout = () => {
-        axios.post(backendUrl + logout);
-        dispatch(resetSession());
+        postData(backendUrl + logout)
+            .then((response) => {
+                if (response.status != 200) {
+                    alert("Error while logging out!");
+                } else {
+                    dispatch(outdateAccount());
+                    dispatch(resetSession());
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                alert("Error connecting to backend!");
+            });
     };
 
     return (

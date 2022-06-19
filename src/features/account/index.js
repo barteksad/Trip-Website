@@ -14,7 +14,7 @@ export const Account = () => {
         dispatch(fetchAccount());
         dispatch(fetchTrips());
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [accountState.fetchState]);
+    }, [accountState]);
 
     console.log(accountState);
 
