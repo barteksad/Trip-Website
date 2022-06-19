@@ -1,16 +1,14 @@
 // import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-// import { useNavigate } from "react-router-dom";
 import React, { useEffect } from "react";
-
-import { Header } from "../header/index.js";
-import { Footer } from "../footer/index.js";
-import { TripDescription } from "../trip/tripDescription/index.js";
+import { useDispatch, useSelector } from "react-redux";
 import "../../css/common.css";
 import "../../css/main.css";
+import { Footer } from "../footer/index.js";
+import { Header } from "../header/index.js";
+import { TripDescription } from "../trip/tripDescription/index.js";
 
-import { tripsSelector } from "../selectors.js";
 import { fetchTrips } from "../actions.js";
+import { tripsSelector } from "../selectors.js";
 
 export const Main = () => {
     const tripsState = useSelector(tripsSelector);

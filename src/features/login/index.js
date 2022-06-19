@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Header } from "../header";
 import { Footer } from "../footer";
-import axios from "axios";
 import { backendUrl, login } from "../../routes";
 import { useDispatch, useSelector } from "react-redux";
 import { outdateAccount, setSession } from "../actions";
 import { useNavigate } from "react-router-dom";
 import { loggedInSelector } from "../selectors";
+import { postData } from "../utils";
 
 export const Login = () => {
     const dispatch = useDispatch();
@@ -25,36 +25,25 @@ export const Login = () => {
     const handleSumbit = async (event) => {
         event.preventDefault();
 
-        axios
-            .post(
-                backendUrl + login,
-                {
-                    email: email,
-                    password: password,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    withCredentials: true,
+        const loginData = {
+            email: email,
+            password: password,
+        };
+
+        postData(backendUrl + login, loginData)
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.error != null) {
+                    alert(data.error);
+                    return;
                 }
-            )
-            .then((res) => {
-                if (res.status == 200) {
-                    if (res.data.loggedIn == false) {
-                        alert(res.data.error);
-                    } else {
-                        dispatch(setSession());
-                        dispatch(outdateAccount());
-                        navigate("/main");
-                    }
-                } else {
-                    alert("Error connectiong to backend");
-                }
+                dispatch(setSession());
+                dispatch(outdateAccount());
+                navigate("/main");
             })
             .catch((err) => {
                 console.log(err);
-                alert("Error connectiong to backend");
+                alert("Error connectiong to backend!");
             });
     };
 

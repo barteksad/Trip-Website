@@ -8,6 +8,7 @@ import axios from "axios";
 import { backendUrl, reserve } from "../../routes";
 import { useNavigate } from "react-router-dom";
 import { outdateTrips, outdateAccount } from "../actions";
+import { postData } from "../utils";
 axios.defaults.withCredentials = true;
 export const Reserve = () => {
     const { id } = useParams();
@@ -44,36 +45,24 @@ export const Reserve = () => {
             return;
         }
 
-        axios
-            .post(
-                backendUrl + reserve,
-                {
-                    count: count,
-                    tripId: parseInt(id),
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    withCredentials: true,
+        const reserveData = {
+            count: count,
+            tripId: parseInt(id),
+        };
+
+        postData(backendUrl + reserve, reserveData)
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.error != null) {
+                    alert(data.error);
+                    return;
                 }
-            )
-            .then((res) => {
-                if (res.status == 200) {
-                    if (res.data.error == null) {
-                        dispatch(outdateAccount());
-                        dispatch(outdateTrips());
-                        navigate("/account");
-                    } else {
-                        alert(res.data.error);
-                    }
-                } else {
-                    alert(res.data.error);
-                }
+                dispatch(outdateAccount());
+                dispatch(outdateTrips());
+                navigate("/account");
             })
             .catch((err) => {
                 console.log(err);
-                console.log(err.response.data);
                 alert("Error connectiong to backend!");
             });
     };

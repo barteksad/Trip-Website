@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { backendUrl, signin } from "../../routes";
-import { outdateAccount, outdateTrips, setSession } from "../actions";
+import { outdateAccount, setSession } from "../actions";
 import { Footer } from "../footer";
 import { Header } from "../header";
 import { loggedInSelector } from "../selectors";
@@ -169,7 +169,6 @@ export const SignIn = () => {
                 }
                 dispatch(setSession());
                 dispatch(outdateAccount());
-                dispatch(outdateTrips());
                 navigate("/main");
             })
             .catch((err) => {
